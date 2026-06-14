@@ -1,4 +1,4 @@
-# Study Smart
+# Study Smart 🧠
 
 Study Smart is a full-stack **RAG-based study application** that turns uploaded PDFs into a searchable local knowledge base. It uses **LangChain** to orchestrate retrieval, reranking, prompt construction, and calls to **LLM APIs** so students can ask questions, view source chunks, generate summaries, and practice with multiple-choice quizzes.
 
