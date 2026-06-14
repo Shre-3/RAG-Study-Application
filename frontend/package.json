@@ -1,0 +1,29 @@
+{
+  "name": "study-smart-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-markdown": "^10.1.0",
+    "react-router-dom": "^6.30.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "8",
+    "@vitejs/plugin-react": "4",
+    "autoprefixer": "latest",
+    "eslint": "8",
+    "eslint-plugin-react-hooks": "latest",
+    "globals": "latest",
+    "postcss": "latest",
+    "tailwindcss": "3",
+    "vite": "5"
+  }
+}

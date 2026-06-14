@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  background: #1a1a1a;
+  color: #ffffff;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+#root,
+.min-h-screen {
+  background: #1a1a1a !important;
+  color: #ffffff !important;
+}
+
+header,
+article,
+.bg-white,
+.bg-slate-50,
+.bg-slate-100,
+.bg-green-50,
+.bg-red-50 {
+  background-color: #242424 !important;
+  color: #ffffff !important;
+}
+
+section.rounded-3xl.bg-white.p-6.shadow-sm {
+  background-color: #363737 !important;
+  color: #ffffff !important;
+}
+
+.border,
+.border-b,
+.border-2,
+.border-dashed {
+  border-color: #3a3a3a !important;
+}
+
+button,
+a[aria-current],
+.bg-brand-600,
+.bg-brand-700 {
+  background-color: #ff5f1f !important;
+  color: #ffffff !important;
+}
+
+button:hover,
+a[aria-current]:hover {
+  background-color: #e94f13 !important;
+}
+
+button:disabled {
+  background-color: #ff5f1f !important;
+  opacity: 0.55;
+}
+
+a:not([aria-current]) {
+  background-color: #242424 !important;
+  color: #ffffff !important;
+}
+
+a:not([aria-current]):hover {
+  background-color: #333333 !important;
+}
+
+input,
+textarea {
+  background-color: #1f1f1f !important;
+  border-color: #4a4a4a !important;
+  color: #ffffff !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #b8b8b8 !important;
+}
+
+.text-ink,
+.text-white,
+.text-slate-500,
+.text-slate-600,
+.text-slate-700,
+.text-slate-800,
+.text-green-800,
+.text-green-900,
+.text-red-700,
+.text-brand-600,
+.text-brand-700 {
+  color: #ffffff !important;
+}
+
+.bg-brand-50,
+.bg-brand-100 {
+  background-color: rgba(255, 95, 31, 0.18) !important;
+  color: #ffffff !important;
+}
+
+.shadow-sm {
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.28) !important;
+}
+
+.prose-lite h2,
+.prose-lite h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.prose-lite h2:first-child,
+.prose-lite h3:first-child {
+  margin-top: 0;
+}
+
+.prose-lite h2 {
+  font-size: 1.35rem;
+}
+
+.prose-lite h3 {
+  font-size: 1.1rem;
+}
+
+.prose-lite p {
+  margin: 0.6rem 0;
+}
+
+.prose-lite ul {
+  margin-left: 1.25rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.9rem;
+  list-style: disc;
+}
+
+.prose-lite li {
+  margin: 0.3rem 0;
+}
+
+.prose-lite strong {
+  color: #ffb08f;
+  font-weight: 800;
+}
