@@ -33,9 +33,8 @@ npm install
 npm run dev
 ```
 
-## Docker Setup
+## Docker Setup 🐋
 
-Stop any local backend/frontend dev servers first, because Docker uses ports `8000` and `5173`.
 
 ```bash
 cp backend/.env.example backend/.env
@@ -48,7 +47,4 @@ Open:
 - Frontend: `http://localhost:5173`
 - Backend: `http://localhost:8000`
 
-Docker persists uploaded PDFs and Chroma data through mounted folders:
 
-- `backend/uploads`
-- `backend/chroma_db`
