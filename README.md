@@ -23,6 +23,8 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
+Create `backend/.env` from `backend/.env.example` and set `OPENAI_API_KEY`.
+
 ## Frontend Setup
 
 ```bash
@@ -30,3 +32,23 @@ cd frontend
 npm install
 npm run dev
 ```
+
+## Docker Setup
+
+Stop any local backend/frontend dev servers first, because Docker uses ports `8000` and `5173`.
+
+```bash
+cp backend/.env.example backend/.env
+# edit backend/.env and set OPENAI_API_KEY
+docker compose up --build
+```
+
+Open:
+
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:8000`
+
+Docker persists uploaded PDFs and Chroma data through mounted folders:
+
+- `backend/uploads`
+- `backend/chroma_db`
