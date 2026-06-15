@@ -11,4 +11,4 @@ langchain-chroma
 chromadb
 pymupdf
 sentence-transformers
-langsmith
+
