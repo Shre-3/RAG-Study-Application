@@ -1,4 +1,4 @@
-# Study Smart 🧠
+# RAG Study Application: Study Smart 🧠
 
 Study Smart is a **dockerized full-stack** **RAG-based study application** that turns uploaded PDFs into a searchable local knowledge base. It uses **LangChain** to orchestrate Advanced RAG techniques like: **reranking**, prompt construction, and calls to **LLM APIs** so students can **ask questions, view source chunks, view re-ranked chunk scores, generate summaries, and practice with multiple-choice quizzes.**
 
