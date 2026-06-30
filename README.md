@@ -16,24 +16,7 @@ Study Smart is a **dockerized full-stack** **RAG-based study application** that 
 </p>
 
 ## Live demo
-
-> Add your deployed URLs here once live.
-
-| | URL |
-|--|-----|
-| **App** | `https://your-app.vercel.app` |
-| **API health** | `https://your-api.hf.space/health` |
-
-The public demo runs in **read-only mode** (`DEMO_MODE=true`): sample PDFs are pre-indexed; chat, quiz, and summary are fully interactive. Clone locally for full upload support.
-
-## 2-minute interview walkthrough
-
-1. **Chat** — ask a question; expand **source chunks** and point out **rerank scores** (vector search → cross-encoder reranking → LLM).
-2. **Summary** — generate a structured topic summary from the same corpus.
-3. **Quiz** — show MCQ generation grounded in retrieved notes.
-4. **Documents** — show which sample PDFs power the knowledge base.
-
-**One-liner:** *"I built a RAG pipeline with hybrid retrieval — 12 vector candidates, cross-encoder rerank to top 4, then GPT-4o-mini — wrapped in FastAPI and React, dockerized end-to-end."*
+https://rag-study-application.onrender.com
 
 ## RAG pipeline
 
