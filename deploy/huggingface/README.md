@@ -9,10 +9,6 @@ pinned: false
 license: mit
 ---
 
-FastAPI backend for Study Smart — RAG with Chroma and cross-encoder reranking.
+FastAPI backend for Study Smart.
 
-Set these **Space secrets**:
-
-- `OPENAI_API_KEY`
-- `DEMO_MODE=true`
-- `FRONTEND_ORIGIN` — your Vercel app URL (no trailing slash)
+Space secrets: `OPENAI_API_KEY`, `DEMO_MODE=true`, `FRONTEND_ORIGIN` (your frontend URL).
