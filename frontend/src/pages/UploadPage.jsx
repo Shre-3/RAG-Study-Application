@@ -83,9 +83,9 @@ export default function UploadPage() {
 
         {demoMode ? (
           <p className="mt-4 rounded-2xl border border-brand-100 bg-brand-50 p-4 text-sm text-brand-900">
-            This public demo ships with pre-indexed PDFs so recruiters can try the
-            full RAG pipeline without uploading private files. Clone the repo locally
-            to ingest your own documents.
+            This public demo is pre-loaded with PDFs so users can try the full RAG
+            pipeline without uploading private files. Clone the repo locally to ingest
+            your own documents.
           </p>
         ) : (
           <form onSubmit={handlePdfSubmit} className="mt-6 space-y-4">
