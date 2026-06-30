@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 
 import { deleteUploadedPdf, listUploadedPdfs, uploadPdf } from "../lib/api";
 
 export default function UploadPage() {
+  const { demoMode = false } = useOutletContext() ?? {};
   const [file, setFile] = useState(null);
   const [uploadedPdfs, setUploadedPdfs] = useState([]);
   const [status, setStatus] = useState(null);
@@ -73,39 +75,49 @@ export default function UploadPage() {
     <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
       <section className="rounded-3xl bg-white p-6 shadow-sm">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-600">
-          Ingestion
+          {demoMode ? "Knowledge base" : "Ingestion"}
         </p>
-        <h2 className="mt-2 text-3xl font-bold">Upload your study material</h2>
+        <h2 className="mt-2 text-3xl font-bold">
+          {demoMode ? "Sample study material" : "Upload your study material"}
+        </h2>
 
-        <form onSubmit={handlePdfSubmit} className="mt-6 space-y-4">
-          <label
-            className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center transition hover:border-brand-600 hover:bg-brand-50"
-            onDrop={(event) => {
-              event.preventDefault();
-              setFile(event.dataTransfer.files[0]);
-            }}
-            onDragOver={(event) => event.preventDefault()}
-          >
-            <span className="text-lg font-semibold">
-              {file ? file.name : "Drag and drop a PDF here"}
-            </span>
-            <span className="mt-2 text-sm text-slate-500">
-              or click to choose a file
-            </span>
-            <input
-              className="sr-only"
-              type="file"
-              accept="application/pdf"
-              onChange={(event) => setFile(event.target.files[0])}
-            />
-          </label>
-          <button
-            className="rounded-xl bg-brand-600 px-5 py-3 font-semibold text-white transition hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-60"
-            disabled={!file || loading}
-          >
-            {loading ? "Indexing..." : "Upload PDF"}
-          </button>
-        </form>
+        {demoMode ? (
+          <p className="mt-4 rounded-2xl border border-brand-100 bg-brand-50 p-4 text-sm text-brand-900">
+            This public demo ships with pre-indexed PDFs so recruiters can try the
+            full RAG pipeline without uploading private files. Clone the repo locally
+            to ingest your own documents.
+          </p>
+        ) : (
+          <form onSubmit={handlePdfSubmit} className="mt-6 space-y-4">
+            <label
+              className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center transition hover:border-brand-600 hover:bg-brand-50"
+              onDrop={(event) => {
+                event.preventDefault();
+                setFile(event.dataTransfer.files[0]);
+              }}
+              onDragOver={(event) => event.preventDefault()}
+            >
+              <span className="text-lg font-semibold">
+                {file ? file.name : "Drag and drop a PDF here"}
+              </span>
+              <span className="mt-2 text-sm text-slate-500">
+                or click to choose a file
+              </span>
+              <input
+                className="sr-only"
+                type="file"
+                accept="application/pdf"
+                onChange={(event) => setFile(event.target.files[0])}
+              />
+            </label>
+            <button
+              className="rounded-xl bg-brand-600 px-5 py-3 font-semibold text-white transition hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={!file || loading}
+            >
+              {loading ? "Indexing..." : "Upload PDF"}
+            </button>
+          </form>
+        )}
 
         {status ? (
           <div className="mt-5 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-800">
@@ -123,7 +135,9 @@ export default function UploadPage() {
 
       <section className="rounded-3xl bg-white p-6 shadow-sm">
         <div className="flex items-center justify-between gap-3">
-          <h3 className="text-xl font-bold">Uploaded PDFs</h3>
+          <h3 className="text-xl font-bold">
+            {demoMode ? "Indexed documents" : "Uploaded PDFs"}
+          </h3>
           <button
             className="rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-200"
             onClick={refreshUploadedPdfs}
@@ -158,13 +172,15 @@ export default function UploadPage() {
                 <span className="flex-1 break-all text-sm font-medium text-slate-800">
                   {pdf.filename}
                 </span>
-                <button
-                  className="rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-60"
-                  onClick={() => handleDeletePdf(pdf.filename)}
-                  disabled={deletingFilename === pdf.filename}
-                >
-                  {deletingFilename === pdf.filename ? "Deleting..." : "Delete"}
-                </button>
+                {!demoMode ? (
+                  <button
+                    className="rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-60"
+                    onClick={() => handleDeletePdf(pdf.filename)}
+                    disabled={deletingFilename === pdf.filename}
+                  >
+                    {deletingFilename === pdf.filename ? "Deleting..." : "Delete"}
+                  </button>
+                ) : null}
               </li>
             ))}
           </ul>

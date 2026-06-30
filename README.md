@@ -15,6 +15,26 @@ Study Smart is a **dockerized full-stack** **RAG-based study application** that 
   <img src="https://img.shields.io/badge/Hugging_Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black" alt="Hugging Face" />
 </p>
 
+## Live demo
+
+> Add your deployed URLs here once live.
+
+| | URL |
+|--|-----|
+| **App** | `https://your-app.vercel.app` |
+| **API health** | `https://your-api.hf.space/health` |
+
+The public demo runs in **read-only mode** (`DEMO_MODE=true`): sample PDFs are pre-indexed; chat, quiz, and summary are fully interactive. Clone locally for full upload support.
+
+## 2-minute interview walkthrough
+
+1. **Chat** — ask a question; expand **source chunks** and point out **rerank scores** (vector search → cross-encoder reranking → LLM).
+2. **Summary** — generate a structured topic summary from the same corpus.
+3. **Quiz** — show MCQ generation grounded in retrieved notes.
+4. **Documents** — show which sample PDFs power the knowledge base.
+
+**One-liner:** *"I built a RAG pipeline with hybrid retrieval — 12 vector candidates, cross-encoder rerank to top 4, then GPT-4o-mini — wrapped in FastAPI and React, dockerized end-to-end."*
+
 ## RAG pipeline
 
 
@@ -58,14 +78,131 @@ npm install
 npm run dev
 ```
 
-## Docker Setup 🐋
+## Docker Setup 🐋 (recommended)
 
+**Prerequisites:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) with `docker compose` (Compose V2).
+
+### One-time setup
 
 ```bash
-docker compose up --build
+cd "Study Smart"
+cp backend/.env.example backend/.env
+# Edit backend/.env and set OPENAI_API_KEY
+```
+
+### Start (every time)
+
+**Windows (PowerShell):**
+```powershell
+.\docker.ps1 up
+```
+
+**Git Bash / Mac / Linux:**
+```bash
+chmod +x docker.sh
+./docker.sh up
+```
+
+**Or plain Docker Compose (works everywhere):**
+```bash
+docker compose up --build -d
 ```
 
 Open:
 
-- Frontend: `http://localhost:5173`
-- Backend: `http://localhost:8000`
+- **App:** http://localhost:5173
+- **API health:** http://localhost:8000/health
+
+Data (PDFs, Chroma index, Hugging Face model cache) is stored in Docker volumes / `backend/chroma_db` and survives restarts.
+
+### Day-to-day commands
+
+| Action | Command |
+|--------|---------|
+| **Start in background** | `docker compose up -d` |
+| **Stop** | `docker compose down` |
+| **View logs** | `docker compose logs -f` |
+| **Check status** | `docker compose ps` |
+| **After code or dependency changes** | `docker compose up --build -d` |
+| **Full clean rebuild** (if build acts up) | `docker compose down` then `docker compose build --no-cache` then `docker compose up -d` |
+
+Helper scripts wrap the same commands: `.\docker.ps1 down`, `.\docker.ps1 logs`, `.\docker.ps1 rebuild`, `.\docker.ps1 status` (or `./docker.sh …`).
+
+### Notes
+
+- First backend build can take **10–15 minutes** (ML dependencies). Later starts are fast.
+- The backend image uses **CPU-only PyTorch** so builds stay reliable on Windows/Mac without CUDA.
+- Containers use `restart: unless-stopped` — they come back after Docker Desktop or PC reboot when you run `docker compose up -d` once.
+
+## Public demo mode
+
+For portfolio deployments, set on the **backend**:
+
+```env
+DEMO_MODE=true
+```
+
+This disables public uploads/deletes while keeping chat, quiz, and summary live. Pre-index 1–2 **non-sensitive sample PDFs** (e.g. public course notes you authored) before deploying.
+
+## Deployment (no credit card)
+
+**Stack:** Hugging Face Space (backend) + Vercel (frontend)
+
+### Before you deploy
+
+1. **Push code** to GitHub.
+2. **Seed demo data** (so chat works on the live site):
+   - Run locally, upload 1–2 sample PDFs
+   - Copy indexed data into `deploy/seed/` (see `deploy/seed/README.md`)
+   - Commit `deploy/seed/uploads/` and `deploy/seed/chroma_db/`
+
+### Part 1 — Backend (Hugging Face Space)
+
+1. Go to [huggingface.co/new-space](https://huggingface.co/new-space)
+2. **Space name:** `study-smart-api` (or similar)
+3. **SDK:** Docker
+4. **Hardware:** CPU basic (free)
+5. Create the Space
+6. **Settings → Repository** → link your GitHub repo
+7. Set **Space directory** / Dockerfile path to `deploy/huggingface` (if prompted)
+8. **Settings → Variables and secrets** → add:
+
+| Secret | Value |
+|--------|--------|
+| `OPENAI_API_KEY` | your key |
+| `DEMO_MODE` | `true` |
+| `FRONTEND_ORIGIN` | `https://YOUR-APP.vercel.app` (set after Part 2) |
+
+9. Wait for build (~15 min first time)
+10. Test: `https://YOUR-USERNAME-study-smart-api.hf.space/health`  
+    → `{"status":"ok","demo_mode":true}`
+
+### Part 2 — Frontend (Vercel)
+
+1. Go to [vercel.com](https://vercel.com) → **Add New Project**
+2. Import your GitHub repo
+3. **Root Directory:** `frontend`
+4. **Framework:** Vite
+5. **Environment variable:**
+
+| Name | Value |
+|------|--------|
+| `VITE_API_BASE_URL` | `https://YOUR-USERNAME-study-smart-api.hf.space` |
+
+6. Deploy → copy your URL, e.g. `https://study-smart.vercel.app`
+
+### Part 3 — Connect them
+
+1. Back on Hugging Face → update secret `FRONTEND_ORIGIN` to your Vercel URL
+2. Restart / rebuild the Space if needed
+3. Update this README **Live demo** table with your real URLs
+4. Open the Vercel URL → you should see the **Live demo** banner, no upload button
+
+### Deploy checklist
+
+- [ ] Sample PDFs in `deploy/seed/`
+- [ ] `DEMO_MODE=true` on HF only (keep `false` in local `.env`)
+- [ ] `VITE_API_BASE_URL` on Vercel
+- [ ] `FRONTEND_ORIGIN` on HF matches Vercel URL
+- [ ] `/health` shows `demo_mode: true`
+- [ ] Chat works on live site

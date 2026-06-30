@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
-      { index: true, element: <Navigate to="/upload" replace /> },
+      { index: true, element: <Navigate to="/chat" replace /> },
       { path: "upload", element: <UploadPage /> },
       { path: "chat", element: <ChatPage /> },
       { path: "quiz", element: <QuizPage /> },

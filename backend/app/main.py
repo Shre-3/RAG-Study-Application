@@ -49,8 +49,16 @@ app.add_middleware(
 
 
 @app.get("/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
+def health(config: Settings = Depends(get_settings)) -> dict[str, str | bool]:
+    return {"status": "ok", "demo_mode": config.demo_mode}
+
+
+def _ensure_writes_allowed(config: Settings) -> None:
+    if config.demo_mode:
+        raise HTTPException(
+            status_code=403,
+            detail="Uploads and deletions are disabled on the public demo.",
+        )
 
 
 @app.get("/documents/pdfs", response_model=UploadedPdfListResponse)
@@ -72,6 +80,7 @@ def delete_uploaded_pdf(
     config: Settings = Depends(get_settings),
     agent: StudyAgent = Depends(get_agent),
 ) -> DeletePdfResponse:
+    _ensure_writes_allowed(config)
     if Path(filename).name != filename or not filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Invalid PDF filename.")
 
@@ -91,6 +100,7 @@ def upload_pdf(
     config: Settings = Depends(get_settings),
     agent: StudyAgent = Depends(get_agent),
 ) -> UploadResponse:
+    _ensure_writes_allowed(config)
     if file.content_type != "application/pdf":
         raise HTTPException(status_code=400, detail="Only PDF uploads are supported.")
 

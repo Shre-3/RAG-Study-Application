@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     chroma_dir: str = "./chroma_db"
     upload_dir: str = "./uploads"
     frontend_origin: str = "http://localhost:5173"
+    demo_mode: bool = False
     chat_model: str = "gpt-4o-mini"
     embedding_model: str = "text-embedding-3-small"
     reranker_model: str = "cross-encoder/ms-marco-MiniLM-L-6-v2"
